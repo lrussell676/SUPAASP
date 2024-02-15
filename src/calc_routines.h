@@ -15,7 +15,7 @@ std::vector<std::vector<double>> force_routine(const std::vector<std::vector<dou
                                                const std::vector<std::vector<double>>&,\
                                                const double&, const double&, const double&,\
                                                const double&, const double&, const double&,\
-                                               const double&, std::array<double, 3>&,\
+                                               const double&, const std::array<double, 3>&,\
                                                const int&);
 
 void initialise_positions(std::vector<std::vector<double>>&,\

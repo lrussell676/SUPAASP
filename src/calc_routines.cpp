@@ -84,7 +84,7 @@ void pbc(std::vector<std::vector<double>>& R, std::vector<double>&iR, const std:
 std::vector<std::vector<double>> force_routine(const std::vector<std::vector<double>>& R, const std::vector<std::vector<double>>& V,\
                                                const double& m, const double& gamma, const double& KbT, const double& dt, \
                                                const double& energy_scale, const double& length_scale, const double& rc1,\
-                                               std::array<double, 3>& L, const int& N) 
+                                               const std::array<double, 3>& L, const int& N) 
 {
   std::vector<std::vector<double>> force_array(3, std::vector<double>(N, 0.0));
 
@@ -135,7 +135,7 @@ std::vector<std::vector<double>> force_routine(const std::vector<std::vector<dou
 void Verlet_Integration(std::vector<std::vector<double>>& R, std::vector<std::vector<double>>& V, const double& m, const int& N,\
                         const double& dt, const double& t, const double& t_max, const int& t_n, std::vector<double>& timesteps,\
                         const std::string& filename_x, const std::string& filename_v, const double& gamma, const double& KbT,\
-                        const double& energy_scale, const double& length_scale, const double& rc1, std::array<double, 3>& L,\
+                        const double& energy_scale, const double& length_scale, const double& rc1, const std::array<double, 3>& L,\
                         std::vector<double>& iR) 
 {
   double t_ip1 = t;

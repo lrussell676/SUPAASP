@@ -33,7 +33,7 @@ int main() {
    const int n_timesteps = (t_max - t) / dt;
    std::vector<double> timesteps(n_timesteps, 0.0);
    std::vector<double> iR(N, 0.0);
-   std::array<double, 3> L = {Lx, Ly, Lz};
+   const std::array<double, 3> L = {Lx, Ly, Lz};
    std::vector<std::vector<double>> R(3, std::vector<double>(N, 0.0));
    std::vector<std::vector<double>> V(3, std::vector<double>(N, 0.0));
 /* ------------------------------------------------------------------------------------------------
