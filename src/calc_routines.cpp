@@ -84,7 +84,7 @@ void pbc(std::vector<std::vector<double>>& R, std::vector<double>&iR, const std:
 std::vector<std::vector<double>> force_routine(const std::vector<std::vector<double>>& R, const std::vector<std::vector<double>>& V,\
                                                const double& m, const double& gamma, const double& KbT, const double& dt, \
                                                const double& energy_scale, const double& length_scale, const double& rc1,\
-                                                std::array<double, 3>& L, const int& N) 
+                                               std::array<double, 3>& L, const int& N) 
 {
   std::vector<std::vector<double>> force_array(3, std::vector<double>(N, 0.0));
 
@@ -132,3 +132,41 @@ std::vector<std::vector<double>> force_routine(const std::vector<std::vector<dou
 }
 
 /* ------------------------------------------------------------------------------------------------------------------------------- */
+void Verlet_Integration(std::vector<std::vector<double>>& R, std::vector<std::vector<double>>& V, const double& m, const int& N,\
+                        const double& dt, const double& t, const double& t_max, const int& t_n, std::vector<double>& timesteps,\
+                        const std::string& filename_x, const std::string& filename_v, const double& gamma, const double& KbT,\
+                        const double& energy_scale, const double& length_scale, const double& rc1, std::array<double, 3>& L,\
+                        std::vector<double>& iR) 
+{
+  double t_ip1 = t;
+  std::vector<double> time;
+  std::vector<std::vector<double>> V_i_half(3, std::vector<double>(N, 0.0));
+  std::vector<std::vector<double>> temp_force_routine(3, std::vector<double>(N, 0.0));
+  int i = 0;
+  for (int i = 0; i <= t_n; i++) {
+  //while (t <= t_max) {
+    // This gets our initial increment
+    temp_force_routine = force_routine(R, V, m, gamma, KbT, dt, energy_scale, length_scale, rc1, L, N);
+    for (int n = 0; n < N; n++) {
+      for (int p = 0; p < 3; p++) {
+        V_i_half[p][n] = V[p][n] + temp_force_routine[p][n] * dt / 2;
+        R[p][n] += V_i_half[p][n] * dt;
+      }
+    }
+    temp_force_routine = force_routine(R, V_i_half, m, gamma, KbT, dt, energy_scale, length_scale, rc1, L, N);
+    for (int n = 0; n < N; n++) {
+      for (int p = 0; p < 3; p++) {
+        V[p][n] = V_i_half[p][n] + temp_force_routine[p][n] * dt / 2;
+      }
+    }
+    //V_i_half = V + temp_force_routine * dt / 2;
+    //R += V_i_half * dt;
+    //V = V_i_half + force_routine(R, V_i_half, m, gamma, KbT, dt, energy_scale, length_scale, rc1, L, N) * dt / 2;
+    pbc(R, iR, L, N);
+    //write_to_file(filename_x, R); // store (appending) the position data to file 
+    //write_to_file(filename_v, V); // store (appending) the velocity data to file
+    timesteps[i] = t; // stores time values
+    t_ip1 += dt;
+    //i += 1;
+  }
+}

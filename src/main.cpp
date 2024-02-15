@@ -31,7 +31,7 @@ int main() {
    ---- Declaring Necessary Vectors and Arrays ----------------------------------------------------
    --------------------------------------------------------------------------------------------- */
    const int n_timesteps = (t_max - t) / dt;
-   std::vector<double> time(n_timesteps, 0.0);
+   std::vector<double> timesteps(n_timesteps, 0.0);
    std::vector<double> iR(N, 0.0);
    std::array<double, 3> L = {Lx, Ly, Lz};
    std::vector<std::vector<double>> R(3, std::vector<double>(N, 0.0));
@@ -43,12 +43,15 @@ int main() {
    initialise_velocities(V, N, L, T, m);
    std::string output_file_path_1 = "./initial_pos.txt";
    std::string output_file_path_2 = "./initial_vel.txt";
-   write_to_file(output_file_path_1, R);
-   write_to_file(output_file_path_2, V);
+   //write_to_file(output_file_path_1, R);
+   //write_to_file(output_file_path_2, V);
    pbc(R, iR, L, N);
    std::vector<std::vector<double>> force_array = force_routine(R, V, m, \
                                     gamma, KbT, dt, energy_scale, length_scale, rc1, L, N);
    //write("filename_x.txt", "filename_v.txt", R, V);
+   Verlet_Integration(R, V, m, N, dt, t, t_max, n_timesteps, timesteps, \
+                      output_file_path_1, output_file_path_2,\
+                      gamma, KbT, energy_scale, length_scale, rc1, L, iR);
 
    std::cout << "Hello, World!" << std::endl;
 
