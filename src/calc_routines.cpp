@@ -3,6 +3,7 @@
    --------------------------------------------------------------------------------------------- */
 
 #include "calc_routines.h"
+#include "files.h"
 
 /* ------------------------------------------------------------------------------------------------------------------------------- */
 void initialise_positions(std::vector<std::vector<double>>& R, const int& N, const std::array<double, 3>& L, const double& rc2) 
@@ -134,9 +135,9 @@ std::vector<std::vector<double>> force_routine(const std::vector<std::vector<dou
 /* ------------------------------------------------------------------------------------------------------------------------------- */
 void Verlet_Integration(std::vector<std::vector<double>>& R, std::vector<std::vector<double>>& V, const double& m, const int& N,\
                         const double& dt, const double& t, const double& t_max, const int& t_n, std::vector<double>& timesteps,\
-                        const std::string& filename_x, const std::string& filename_v, const double& gamma, const double& KbT,\
-                        const double& energy_scale, const double& length_scale, const double& rc1, const std::array<double, 3>& L,\
-                        std::vector<double>& iR) 
+                        const std::string& filename_x, const std::string& filename_v, const int& t_pw, const double& gamma,\
+                        const double& KbT, const double& energy_scale, const double& length_scale, const double& rc1,\ 
+                        const std::array<double, 3>& L, std::vector<double>& iR) 
 {
   double t_ip1 = t;
   std::vector<double> time;
@@ -159,14 +160,15 @@ void Verlet_Integration(std::vector<std::vector<double>>& R, std::vector<std::ve
         V[p][n] = V_i_half[p][n] + temp_force_routine[p][n] * dt / 2;
       }
     }
-    //V_i_half = V + temp_force_routine * dt / 2;
-    //R += V_i_half * dt;
-    //V = V_i_half + force_routine(R, V_i_half, m, gamma, KbT, dt, energy_scale, length_scale, rc1, L, N) * dt / 2;
     pbc(R, iR, L, N);
+    if ( (i % t_pw) == 0) {
+      printf("Writing to data file at time: %d, timestep: %f\n", t_ip1, i);
+      write_to_file(filename_x, R); // store (appending) the position data to file 
+      write_to_file(filename_v, V); // store (appending) the velocity data to file
+    }
     //write_to_file(filename_x, R); // store (appending) the position data to file 
     //write_to_file(filename_v, V); // store (appending) the velocity data to file
     timesteps[i] = t; // stores time values
     t_ip1 += dt;
-    //i += 1;
   }
 }

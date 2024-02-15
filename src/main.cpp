@@ -5,14 +5,18 @@
 #include "calc_routines.h"
 #include "files.h"
 
+#include <chrono>
+
 int main() {
+   auto start = std::chrono::high_resolution_clock::now(); // Start wall time
 /* ------------------------------------------------------------------------------------------------
    ---- ### DEFINE SIMULATION CONDITIONS HERE ### -------------------------------------------------
    --------------------------------------------------------------------------------------------- */
    // Timescales
    const double dt = 0.0005;           // Timestep size
    const double t = 0.0;               // Initial time
-   const double t_max = 10.0;          // Maximum time
+   const double t_max = 1.0;          // Maximum time
+   const int t_pw = 100;            // Write to file every t_pw timesteps
    // Simulation Scale and Sizing
    const int N = 5;                    // Number of atoms
    const double Lx = 10.0;             // Box length in x
@@ -27,8 +31,11 @@ int main() {
    const double rc2 = 2.5;             // Overlap reject thershold for random position generation
    const double T = 1.0;               // Temperature
    const double m = 1.0;               // Mass of atoms
+   // Paths to write outputted data into
+   std::string output_file_path_x = "./data_pos.txt";  // Data file output for positions
+   std::string output_file_path_v = "./data_vel.txt";  // Data file output for velocities
 /* ------------------------------------------------------------------------------------------------
-   ---- Declaring Necessary Vectors and Arrays ----------------------------------------------------
+   ---- Declaring Necessary Data from Input Conditions --------------------------------------------
    --------------------------------------------------------------------------------------------- */
    const int n_timesteps = (t_max - t) / dt;
    std::vector<double> timesteps(n_timesteps, 0.0);
@@ -39,21 +46,33 @@ int main() {
 /* ------------------------------------------------------------------------------------------------
    ---- Calling Initialisation Functions ----------------------------------------------------------
    --------------------------------------------------------------------------------------------- */
+   std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
+   std::cout << "|| --------- Simulation and Particle Initialisation ----------- ||" << std::endl;
+   std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
    initialise_positions(R, N, L, rc2);
    initialise_velocities(V, N, L, T, m);
-   std::string output_file_path_1 = "./initial_pos.txt";
-   std::string output_file_path_2 = "./initial_vel.txt";
-   //write_to_file(output_file_path_1, R);
-   //write_to_file(output_file_path_2, V);
    pbc(R, iR, L, N);
-   std::vector<std::vector<double>> force_array = force_routine(R, V, m, \
+/* ------------------------------------------------------------------------------------------------
+   ---- Performing Verlet Integration -------------------------------------------------------------
+   --------------------------------------------------------------------------------------------- */
+   //std::vector<std::vector<double>> force_array = force_routine(R, V, m, \
                                     gamma, KbT, dt, energy_scale, length_scale, rc1, L, N);
-   //write("filename_x.txt", "filename_v.txt", R, V);
+   std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
+   std::cout << "|| ------------- Beginning Verlet Integration ----------------- ||" << std::endl;
+   std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
    Verlet_Integration(R, V, m, N, dt, t, t_max, n_timesteps, timesteps, \
-                      output_file_path_1, output_file_path_2,\
+                      output_file_path_x, output_file_path_v, t_pw,\
                       gamma, KbT, energy_scale, length_scale, rc1, L, iR);
 
-   std::cout << "Hello, World!" << std::endl;
+   std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
+   std::cout << "|| ----------- Successful Exit to End of Program -------------- ||" << std::endl;
+   std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
+/* ------------------------------------------------------------------------------------------------
+   ---- Total Wall Time ---------------------------------------------------------------------------
+   --------------------------------------------------------------------------------------------- */
+   auto end = std::chrono::high_resolution_clock::now();
+   std::chrono::duration<double> duration = end - start;
+   std::cout << "Total wall time: " << duration.count() << " seconds" << std::endl;
 
    return 0;
 }

@@ -28,6 +28,6 @@ void initialise_velocities(std::vector<std::vector<double>>&,\
 void Verlet_Integration(std::vector<std::vector<double>>&, std::vector<std::vector<double>>&, \
                         const double&, const int&, const double& dt, const double& t, \
                         const double&, const int&, std::vector<double>&,\
-                        const std::string&, const std::string&,
+                        const std::string&, const std::string&, const int&,\
                         const double&, const double&, const double&, const double&, \
                         const double&, const std::array<double, 3>&, std::vector<double>&);
