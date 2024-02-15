@@ -1,6 +1,6 @@
 CC=g++                                 #Name of compiler
-FLAGS=-std=c++20 -w                    #Compiler flags
-TARGET=SUPAASP 				           #Name of executable
+FLAGS=-std=c++20 -w -O3                #Compiler flags
+TARGET=SUPAASP 			       #Name of executable
 OBJECTS=main.o calc_routines.o files.o #List of object files
 LIBS=                                  #Libraries, not needed
 
@@ -19,7 +19,7 @@ calc_routines.o : calc_routines.cpp calc_routines.h
 files.o : files.cpp files.h
 	${CC} ${FLAGS} ${LIBS} -c files.cpp
 
-clean: #No targets just run shell command to rm object files and emacs backups
+clean: #No targets just run shell command to rm object files
 	@rm -f *.o *~
 
 cleantarget: #Delete the exectuable
