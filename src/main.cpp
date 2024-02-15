@@ -15,7 +15,7 @@ int main() {
    // Timescales
    const double dt = 0.0005;           // Timestep size
    const double t = 0.0;               // Initial time
-   const double t_max = 1.0;          // Maximum time
+   const double t_max = 1;          // Maximum time
    const int t_pw = 100;            // Write to file every t_pw timesteps
    // Simulation Scale and Sizing
    const int N = 5;                    // Number of atoms
@@ -54,21 +54,18 @@ int main() {
    pbc(R, iR, L, N);
    printf("Periodic Boundary Conditions now applied to all particles.\n");
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
-   printf("Specified data files will be cleared, ready for new data.\n");
-   clear_data_files(output_file_path_x);
-   clear_data_files(output_file_path_v);
+   printf("Specified data files will be prepared, ready for new data.\n");
+   prep_data_files(output_file_path_x, N, n_timesteps, L);
+   prep_data_files(output_file_path_v, N, n_timesteps, L);
 /* ------------------------------------------------------------------------------------------------
    ---- Performing Verlet Integration -------------------------------------------------------------
    --------------------------------------------------------------------------------------------- */
-   //std::vector<std::vector<double>> force_array = force_routine(R, V, m, \
-                                    gamma, KbT, dt, energy_scale, length_scale, rc1, L, N);
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
    std::cout << "|| ------------- Beginning Verlet Integration ----------------- ||" << std::endl;
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
    Verlet_Integration(R, V, m, N, dt, t, t_max, n_timesteps, timesteps, \
                       output_file_path_x, output_file_path_v, t_pw,\
                       gamma, KbT, energy_scale, length_scale, rc1, L, iR);
-
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
    std::cout << "|| ----------- Successful Exit to End of Program -------------- ||" << std::endl;
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
@@ -78,6 +75,6 @@ int main() {
    auto end = std::chrono::high_resolution_clock::now();
    std::chrono::duration<double> duration = end - start;
    std::cout << "Total wall time: " << duration.count() << " seconds" << std::endl;
-
+   
    return 0;
 }
