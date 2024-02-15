@@ -52,6 +52,11 @@ int main() {
    initialise_positions(R, N, L, rc2);
    initialise_velocities(V, N, L, T, m);
    pbc(R, iR, L, N);
+   printf("Periodic Boundary Conditions now applied to all particles.\n");
+   std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
+   printf("Specified data files will be cleared, ready for new data.\n");
+   clear_data_files(output_file_path_x);
+   clear_data_files(output_file_path_v);
 /* ------------------------------------------------------------------------------------------------
    ---- Performing Verlet Integration -------------------------------------------------------------
    --------------------------------------------------------------------------------------------- */

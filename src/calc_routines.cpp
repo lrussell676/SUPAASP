@@ -21,7 +21,6 @@ void initialise_positions(std::vector<std::vector<double>>& R, const int& N, con
     xp[0] *= 0.5 * L[0];
     xp[1] *= 0.5 * L[1];
     xp[2] *= 0.5 * L[2];
-    printf("Initial position of particle %d: (%f, %f, %f)\n", a, xp[0], xp[1], xp[2]);
     // Check for overlap, accept pass and reject fail
     bool flag = true;
     for (int b = 0; b < N; b++) {
@@ -35,7 +34,6 @@ void initialise_positions(std::vector<std::vector<double>>& R, const int& N, con
         R[0][a] = xp[0];
         R[1][a] = xp[1];
         R[2][a] = xp[2];
-        printf("Particle %d has been initialised\n", a);
         a++;
     }
   }
@@ -61,7 +59,7 @@ void initialise_velocities(std::vector<std::vector<double>>& V, const int& N, co
         V[i][n] *= std::sqrt(3 * T / m);
     }
   }
-  printf("Initial velocities have also been initialised for all %d particles\n", N);
+  printf("Initial velocities have also been initialised for all particles.\n");
 }
 
 /* ------------------------------------------------------------------------------------------------------------------------------- */

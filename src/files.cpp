@@ -6,6 +6,15 @@
 #include <iomanip> // Include the <iomanip> library for std::setw()
                    // setw() ensures column alignment - looks much tidier.
 
+/* --------------------------------------------------------------------------------------------- */
+void clear_data_files(std::string file_write_path) {
+   std::ofstream file_out;
+   file_out.open(file_write_path, std::ios::trunc); // Opens the file in truncation mode
+   file_out.close();
+   std::cout << "File \"" << file_write_path << "\" has been created/cleared!" << std::endl;
+}
+
+/* --------------------------------------------------------------------------------------------- */
 void write_to_file(std::string file_write_path, std::vector<std::vector<double>>& \
                   data_vec_3D) {
 
