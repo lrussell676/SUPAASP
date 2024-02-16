@@ -45,11 +45,12 @@ void initialise_positions(std::vector<std::vector<double>>& R, const int& N, \
 
 /* --------------------------------------------------------------------------------------------- */
 void initialise_velocities(std::vector<std::vector<double>>& V, const int& N, \
-                           const std::array<double, 3>& L, const double& T, const double& m) 
+                           const std::array<double, 3>& L, const double& T, const double& m, \
+                           const int& seed) 
 { 
   // This code section below generates random initial velocities which have the correct mean speed
   // as predicted via kinetic theory. The velocities are then scaled to the correct temperature.
-  std::default_random_engine random_engine;
+  std::default_random_engine random_engine(seed);
   for (int n = 0; n < N; n++) {
     double vnorm2;
     for (int i = 0; i < 3; i++) {
@@ -88,7 +89,7 @@ std::vector<std::vector<double>> force_routine(
   const std::vector<std::vector<double>>& R, const std::vector<std::vector<double>>& V,\
   const double& m, const double& gamma, const double& KbT, const double& dt, \
   const double& energy_scale, const double& length_scale, const double& rc1,\
-  const std::array<double, 3>& L, const int& N) 
+  const std::array<double, 3>& L, const int& N, const int& seed) 
 {
   std::vector<std::vector<double>> force_array(3, std::vector<double>(N, 0.0));
 
@@ -119,10 +120,9 @@ std::vector<std::vector<double>> force_routine(
                      ((std::pow(length_scale, 6) * (6))   /  std::pow(r_norm, 8)) )));
         } else F_lj[p] = 0.0;
         //printf("Lennard-Jones force component %d for particle %d: %f\n", p, k, F_lj[p]);
-        std::random_device rd;
-        std::mt19937 gen(rd());
+        std::default_random_engine random_engine(seed);
         std::normal_distribution<double> dist(0.0, 1.0);
-        eta[p] = dist(gen);
+        eta[p] = dist(random_engine);
         F_r[p] = std::sqrt(2 * m * gamma * KbT) * eta[p] / std::sqrt(dt / 2);
         //F_f[p] = gamma * V[p][k];
 
@@ -143,7 +143,7 @@ void Verlet_Integration(
   std::vector<double>& timesteps, const std::string& filename_x, const std::string& filename_v, \
   const int& t_pw, const double& gamma, const double& KbT, const double& energy_scale, \
   const double& length_scale, const double& rc1,\ 
-  const std::array<double, 3>& L, std::vector<double>& iR) 
+  const std::array<double, 3>& L, std::vector<double>& iR, const int& seed) 
 {
   double t_i = t;
   std::vector<double> time;
@@ -152,7 +152,7 @@ void Verlet_Integration(
   int i = 0;
   for (int i = 0; i <= t_n; i++) {
     temp_force_routine = force_routine(R, V, m, gamma, KbT, dt, \
-                                       energy_scale, length_scale, rc1, L, N);
+                                       energy_scale, length_scale, rc1, L, N, seed);
     for (int n = 0; n < N; n++) {
       for (int p = 0; p < 3; p++) {
         V_i_half[p][n] = V[p][n] + temp_force_routine[p][n] * dt / 2;
@@ -160,7 +160,7 @@ void Verlet_Integration(
       }
     }
     temp_force_routine = force_routine(R, V_i_half, m, gamma, KbT, dt, \
-                                       energy_scale, length_scale, rc1, L, N);
+                                       energy_scale, length_scale, rc1, L, N, seed);
     for (int n = 0; n < N; n++) {
       for (int p = 0; p < 3; p++) {
         V[p][n] = V_i_half[p][n] + temp_force_routine[p][n] * dt / 2;

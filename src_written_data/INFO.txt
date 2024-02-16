@@ -1,0 +1,3 @@
+This folder is the default location for written data from the MD runs. 
+
+However, the files themselves are excluded from this repository via .gitignore in order to prevent potentially excessive git commit sizes.

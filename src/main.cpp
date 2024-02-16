@@ -6,8 +6,9 @@
 #include "files.h"
 
 #include <chrono>
+#include <cstdlib>
 
-int main() {
+int main(int argc, char* argv[]) {
    auto start = std::chrono::high_resolution_clock::now(); // Start wall time
 /* ------------------------------------------------------------------------------------------------
    ---- ### DEFINE SIMULATION CONDITIONS HERE ### -------------------------------------------------
@@ -22,6 +23,8 @@ int main() {
    const double Lx = 10.0;             // Box length in x
    const double Ly = 10.0;             // Box length in y
    const double Lz = 10.0;             // Box length in z
+   int seed = 242424;                  // Random Seed for Stochastic Forces and RNGs
+
    // Atomic, Thermodynamic, and Molecular Conditions
    const double KbT = 1.0;             // Boltzmann constant
    const double gamma = 1.0;           // Friction coefficient
@@ -32,8 +35,10 @@ int main() {
    const double T = 1.0;               // Temperature
    const double m = 1.0;               // Mass of atoms
    // Paths to write outputted data into
-   std::string output_file_path_x = "./data_pos.txt";  // Data file output for positions
-   std::string output_file_path_v = "./data_vel.txt";  // Data file output for velocities
+   std::string output_file_path_x = \
+         "../src_written_data/data_pos.txt";  // Data file output for positions
+   std::string output_file_path_v = \
+         "../src_written_data/data_vel.txt";  // Data file output for velocities
 /* ------------------------------------------------------------------------------------------------
    ---- Declaring Necessary Data from Input Conditions --------------------------------------------
    --------------------------------------------------------------------------------------------- */
@@ -43,6 +48,18 @@ int main() {
    const std::array<double, 3> L = {Lx, Ly, Lz};
    std::vector<std::vector<double>> R(3, std::vector<double>(N, 0.0));
    std::vector<std::vector<double>> V(3, std::vector<double>(N, 0.0));
+   // Check if seed is provided as a command-line argument
+   if (argc > 1) {
+      seed = std::atoi(argv[1]);
+      std::cout << 
+      "Seed detected as command-line argument.\nUsing provided CLI seed: " << seed << std::endl;
+   } else {
+      std::cout << \
+      "Seed not provided as a command-line argument.\nUsing default seed: " << seed << std::endl;
+   }
+   // Append "_RNGseed" and the seed value to file_write_paths
+   output_file_path_x += "_RNGseed" + std::to_string(seed);
+   output_file_path_v += "_RNGseed" + std::to_string(seed);
 /* ------------------------------------------------------------------------------------------------
    ---- Calling Initialisation Functions ----------------------------------------------------------
    --------------------------------------------------------------------------------------------- */
@@ -50,7 +67,7 @@ int main() {
    std::cout << "|| --------- Simulation and Particle Initialisation ----------- ||" << std::endl;
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
    initialise_positions(R, N, L, rc2);
-   initialise_velocities(V, N, L, T, m);
+   initialise_velocities(V, N, L, T, m, seed);
    pbc(R, iR, L, N);
    printf("Periodic Boundary Conditions now applied to all particles.\n");
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
@@ -65,7 +82,7 @@ int main() {
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
    Verlet_Integration(R, V, m, N, dt, t, t_max, n_timesteps, timesteps, \
                       output_file_path_x, output_file_path_v, t_pw,\
-                      gamma, KbT, energy_scale, length_scale, rc1, L, iR);
+                      gamma, KbT, energy_scale, length_scale, rc1, L, iR, seed);
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
    std::cout << "|| ----------- Successful Exit to End of Program -------------- ||" << std::endl;
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
