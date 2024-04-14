@@ -16,15 +16,15 @@ int main(int argc, char* argv[]) {
    // Timescales
    const double dt = 0.0005;           // Timestep size
    const double t = 0.0;               // Initial time
-   const double t_max = 1;          // Maximum time
-   const int t_pw = 100;            // Write to file every t_pw timesteps
+   const double t_max = 1;             // Maximum time
+   const int t_pw = 10;                // Write to file every t_pw timesteps
    // Simulation Scale and Sizing
    const int N = 5;                    // Number of atoms
    const double Lx = 10.0;             // Box length in x
    const double Ly = 10.0;             // Box length in y
    const double Lz = 10.0;             // Box length in z
    int seed = 242424;                  // Random Seed for Stochastic Forces and RNGs
-
+   
    // Atomic, Thermodynamic, and Molecular Conditions
    const double KbT = 1.0;             // Boltzmann constant
    const double gamma = 1.0;           // Friction coefficient
