@@ -16,18 +16,18 @@ int main(int argc, char* argv[]) {
    // Timescales
    const double dt = 0.0005;           // Timestep size
    const double t = 0.0;               // Initial time
-   const double t_max = 1;             // Maximum time
-   const int t_pw = 10;                // Write to file every t_pw timesteps
+   const double t_max = 30;            // Maximum time
+   const int t_pw = 100;               // Write to file every t_pw timesteps
    // Simulation Scale and Sizing
-   const int N = 5;                    // Number of atoms
-   const double Lx = 10.0;             // Box length in x
-   const double Ly = 10.0;             // Box length in y
-   const double Lz = 10.0;             // Box length in z
+   const int N = 40;                   // Number of atoms
+   const double Lx = 100.0;            // Box length in x
+   const double Ly = 100.0;            // Box length in y
+   const double Lz = 100.0;            // Box length in z
    int seed = 242424;                  // Random Seed for Stochastic Forces and RNGs
    
    // Atomic, Thermodynamic, and Molecular Conditions
    const double KbT = 1.0;             // Boltzmann constant
-   const double gamma = 1.0;           // Friction coefficient
+   const double gamma = 25;            // Friction coefficient
    const double length_scale = 1.0;    // Length scale for Lennard-Jones potential
    const double energy_scale = 1.0;    // Energy scale for Lennard-Jones potential
    const double rc1 = 2.5;             // Cutoff distance for Lennard-Jones potential
@@ -83,6 +83,7 @@ int main(int argc, char* argv[]) {
    Verlet_Integration(R, V, m, N, dt, t, t_max, n_timesteps, timesteps, \
                       output_file_path_x, output_file_path_v, t_pw,\
                       gamma, KbT, energy_scale, length_scale, rc1, L, iR, seed);
+   printf("\n");
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
    std::cout << "|| ----------- Successful Exit to End of Program -------------- ||" << std::endl;
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;

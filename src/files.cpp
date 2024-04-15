@@ -21,11 +21,11 @@ void prep_data_files(std::string file_write_path, const int& N, const int& n_tim
    file_out << "\nTimestep results below:\n" <<std::endl;
    file_out.close();
    std::cout << "File \"" <<  \
-          file_write_path << "\" has been created or wiped, now prepared!" << std::endl;
+          file_write_path << "\"\n   has been created or wiped, now prepared!" << std::endl;
 }
 
 /* --------------------------------------------------------------------------------------------- */
-void write_to_file(std::string file_write_path, std::vector<std::vector<double>>& \
+void write_to_file(std::string file_write_path, std::vector<std::vector<double>> \
                   data_vec_3D, double t, int it) {
 
    std::ofstream file_out;
@@ -43,6 +43,6 @@ void write_to_file(std::string file_write_path, std::vector<std::vector<double>>
              "\t" << std::setw(10) << data_vec_3D[2][i] << std::endl;
       }
    file_out.close();
-   std::cout << "Successful data append to file \"" << file_write_path << "\"!" << std::endl;
+   //std::cout << "Successful data append to file \"" << file_write_path << "\"!" << std::endl;
    }
 }
