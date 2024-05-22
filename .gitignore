@@ -1,4 +1,7 @@
 src/SUPAASP
+src/SUPAASP_KOKKOS
 src/.vscode
+src/cmake_build/*
 .vscode
 src_written_data/data_*
+

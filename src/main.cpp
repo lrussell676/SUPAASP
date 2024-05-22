@@ -2,11 +2,21 @@
    -------------------------- Author: Lewis Russell : SUPAASP Class Student -----------------------
    --------------------------------------------------------------------------------------------- */
 
-#include "calc_routines.h"
 #include "files.h"
 
 #include <chrono>
 #include <cstdlib>
+
+#ifdef KOKKOS_ENABLED
+#define KOKKOS_FLAG 1
+//#include "calc_routines_kokkos.h"
+#include <Kokkos_Core.hpp>
+#else 
+#define KOKKOS_FLAG 0
+#include "calc_routines.h"
+#endif
+
+#include "calc_routines_kokkos.h"
 
 int main(int argc, char* argv[]) {
    auto start = std::chrono::high_resolution_clock::now(); // Start wall time
@@ -60,15 +70,22 @@ int main(int argc, char* argv[]) {
    // Append "_RNGseed" and the seed value to file_write_paths
    output_file_path_x += "_RNGseed" + std::to_string(seed);
    output_file_path_v += "_RNGseed" + std::to_string(seed);
+   // Resolve "calc_functions" class
+   if (KOKKOS_FLAG==1) {
+      Kokkos::initialize(argc,argv);
+      calc_routines_kokkos<class Device> CR;
+   } else {
+      calc_routines CR;
+   }
 /* ------------------------------------------------------------------------------------------------
    ---- Calling Initialisation Functions ----------------------------------------------------------
    --------------------------------------------------------------------------------------------- */
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
    std::cout << "|| --------- Simulation and Particle Initialisation ----------- ||" << std::endl;
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
-   initialise_positions(R, N, L, rc2);
-   initialise_velocities(V, N, L, T, m, seed);
-   pbc(R, iR, L, N);
+   CR.initialise_positions(R, N, L, rc2);
+   CR.initialise_velocities(V, N, L, T, m, seed);
+   CR.pbc(R, iR, L, N);
    printf("Periodic Boundary Conditions now applied to all particles.\n");
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
    printf("Specified data files will be prepared, ready for new data.\n");
@@ -80,13 +97,14 @@ int main(int argc, char* argv[]) {
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
    std::cout << "|| ------------- Beginning Verlet Integration ----------------- ||" << std::endl;
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
-   Verlet_Integration(R, V, m, N, dt, t, t_max, n_timesteps, timesteps, \
+   CR.Verlet_Integration(R, V, m, N, dt, t, t_max, n_timesteps, timesteps, \
                       output_file_path_x, output_file_path_v, t_pw,\
                       gamma, KbT, energy_scale, length_scale, rc1, L, iR, seed);
    printf("\n");
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
    std::cout << "|| ----------- Successful Exit to End of Program -------------- ||" << std::endl;
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
+   Kokkos::finalize();
 /* ------------------------------------------------------------------------------------------------
    ---- Total Wall Time ---------------------------------------------------------------------------
    --------------------------------------------------------------------------------------------- */
