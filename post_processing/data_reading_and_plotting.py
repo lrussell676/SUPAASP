@@ -51,7 +51,8 @@ def plot_data_2D(data):
         ax1.grid()
         #ax1.legend()
         plt.xlabel("t(s)")
-        plt.savefig(f'post_processing//trajectories_2D_{filename}.png')  # Save the plot to a file
+        #plt.savefig(f'post_processing//trajectories_2D_{filename}.png')  # Save the plot to a file
+        plt.savefig(f'trajectories_2D_{filename}.png')  # Save the plot to a file
         plt.close()
 
 def plot_data_3D(data):
@@ -124,7 +125,8 @@ def plot_data_3D(data):
         #plot_end
         fig.suptitle("Particle Trajectories", \
                  fontsize=12, y=0.93)
-        plt.savefig(f'post_processing//trajectories_3D_{filename}.png')  # Save the plot to a file
+        #plt.savefig(f'post_processing//trajectories_3D_{filename}.png')  # Save the plot to a file
+        plt.savefig(f'trajectories_3D_{filename}.png')  # Save the plot to a file
         plt.close()
 
 def plot_MSD(data):
@@ -163,7 +165,8 @@ def plot_MSD(data):
             loc='upper right')
         plt.grid()
         plt.title("MSD for N={} particles".format(num_particles))
-        plt.savefig(f'post_processing//MSD_{filename}.png')  # Save the plot to a file
+        #plt.savefig(f'post_processing//MSD_{filename}.png')  # Save the plot to a file
+        plt.savefig(f'MSD_{filename}.png')  # Save the plot to a file
         plt.close()
 
 def plot_kinetic_energy(data):
@@ -200,13 +203,18 @@ def plot_kinetic_energy(data):
             loc='upper right')
         plt.grid()
         plt.title("Kinetic Energy for N={} particles".format(num_particles))
-        plt.savefig(f'post_processing//kinetic_energy_{filename}.png')  # Save the plot to a file
+        #plt.savefig(f'post_processing//kinetic_energy_{filename}.png')  # Save the plot to a file
+        plt.savefig(f'kinetic_energy_{filename}.png')  # Save the plot to a file
         plt.close()
 
 # Usage:
 # VS sets path from git -> "../src_written_data" not required
-pos_data = read_data("src_written_data","pos.txt")
-vel_data = read_data("src_written_data","vel.txt")
+# If not in VSCode, just comment on/off *_data as needed
+#
+#pos_data = read_data("src_written_data","pos.txt")
+#vel_data = read_data("src_written_data","vel.txt")
+pos_data = read_data("../src_written_data","pos.txt")
+vel_data = read_data("../src_written_data","vel.txt")
 plot_data_2D(pos_data)
 plot_data_3D(pos_data)
 plot_MSD(pos_data)
