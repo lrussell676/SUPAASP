@@ -32,11 +32,11 @@ public:
                      Kokkos::Random_XorShift64_Pool<>&);
                      //Kokkos::Random_XorShift64_Pool<>::generator_type&);*/
 
-   /*void Verlet_Integration(std::vector<std::vector<double>>, std::vector<std::vector<double>>,\
+   void Verlet_Integration(std::vector<std::vector<double>>, std::vector<std::vector<double>>,\
                      const double&, const int&, const double& dt, const double& t,\
                      const double&, const int&, std::vector<double>&,\
                      const std::string&, const std::string&, const int&,\
                      const double&, const double&, const double&, const double&,\
                      const double&, const std::array<double, 3>&, std::vector<double>&,\
-                     const int&) override;*/
+                     const int&) override;
 };

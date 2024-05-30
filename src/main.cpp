@@ -7,11 +7,11 @@
 #include <chrono>
 #include <cstdlib>
 
-//#ifdef KOKKOS_ENABLED
-//#include "calc_routines_kokkos.h"
-//#else
+#ifdef KOKKOS_ENABLED
+#include "calc_routines_kokkos.h"
+#else
 #include "calc_routines.h"
-//#endif
+#endif
 
 int main(int argc, char* argv[]) {
    auto start = std::chrono::high_resolution_clock::now(); // Start wall time
@@ -21,10 +21,10 @@ int main(int argc, char* argv[]) {
    // Timescales
    const double dt = 0.0005;           // Timestep size
    const double t = 0.0;               // Initial time
-   const double t_max = 30;            // Maximum time
+   const double t_max = 15;            // Maximum time
    const int t_pw = 100;               // Write to file every t_pw timesteps
    // Simulation Scale and Sizing
-   const int N = 15;                   // Number of atoms
+   const int N = 100;                   // Number of atoms
    const double Lx = 100.0;            // Box length in x
    const double Ly = 100.0;            // Box length in y
    const double Lz = 100.0;            // Box length in z
@@ -67,15 +67,13 @@ int main(int argc, char* argv[]) {
    output_file_path_v += "_RNGseed" + std::to_string(seed);
    // Resolve "calc_functions" class
    calc_routines* CR = NULL;
-   //#ifdef KOKKOS_ENABLED
-   //Kokkos::initialize(argc,argv);
-   //{
-   //}
-   //Kokkos::finalize();
-   //CR = new calc_routines_kokkos;
-   //#else
+   #ifdef KOKKOS_ENABLED
+   Kokkos::initialize(argc,argv);
+   {
+   CR = new calc_routines_kokkos;
+   #else
    CR = new calc_routines;
-   //#endif
+   #endif
 /* ------------------------------------------------------------------------------------------------
    ---- Calling Initialisation Functions ----------------------------------------------------------
    --------------------------------------------------------------------------------------------- */
@@ -103,9 +101,10 @@ int main(int argc, char* argv[]) {
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
    std::cout << "|| ----------- Successful Exit to End of Program -------------- ||" << std::endl;
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
-   //#ifdef KOKKOS_ENABLED 
-
-   //#endif
+   #ifdef KOKKOS_ENABLED 
+   }
+   Kokkos::finalize();
+   #endif
 /* ------------------------------------------------------------------------------------------------
    ---- Total Wall Time ---------------------------------------------------------------------------
    --------------------------------------------------------------------------------------------- */

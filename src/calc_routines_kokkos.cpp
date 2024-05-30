@@ -70,7 +70,7 @@
 }*/
 
 /* --------------------------------------------------------------------------------------------- */
-/*void calc_routines_kokkos::Verlet_Integration(
+void calc_routines_kokkos::Verlet_Integration(
   std::vector<std::vector<double>> R, std::vector<std::vector<double>> V, const double& m,\
   const int& N, const double& dt, const double& t, const double& t_max, const int& t_n,\
   std::vector<double>& timesteps, const std::string& filename_x, const std::string& filename_v,\
@@ -97,21 +97,25 @@
                                        energy_scale, length_scale, rc1, L, N, \
                                        //rand_pool);
                                        random_engine, dist);
-    for (int n = 0; n < N; n++) {
+
+    Kokkos::parallel_for(N, KOKKOS_LAMBDA(int n) {
       for (int p = 0; p < 3; p++) {
         V_i_half[p][n] = V[p][n] + temp_force_routine[p][n] * dt / 2;
         R[p][n] += V_i_half[p][n] * dt;
       }
-    }
+    });
+    
     temp_force_routine = force_routine(R, V_i_half, m, gamma, KbT, dt, \
                                        energy_scale, length_scale, rc1, L, N, \
                                        //rand_pool);
                                        random_engine, dist);
-    for (int n = 0; n < N; n++) {
+
+    Kokkos::parallel_for(N, KOKKOS_LAMBDA(int n) {
       for (int p = 0; p < 3; p++) {
         V[p][n] = V_i_half[p][n] + temp_force_routine[p][n] * dt / 2;
       }
-    }
+    });
+
     pbc(R, iR, L, N);
     if ( (i % t_pw) == 0) {
       printf("\rWriting to data file at iteration: %d, time: %f", i, t_i);
@@ -121,4 +125,4 @@
     timesteps[i] = t_i; // stores time values
     t_i += dt;
   }
-}*/
+}
