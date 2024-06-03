@@ -7,9 +7,9 @@
 
 /* --------------------------------------------------------------------------------------------- */
 void calc_routines::initialise_positions(std::vector<std::vector<double>>& R, const int& N,\
-                          const std::array<double, 3>& L, const double& rc2) 
+                          const std::array<double, 3>& L, const double& rc2, const int& seed) 
 {
-  std::default_random_engine random_engine;
+  std::default_random_engine random_engine(seed);
   int a = 0;
   while (a < N) {
     // Initialise random positions with Cartesian components in (-1, +1)

@@ -14,15 +14,16 @@ public:
    calc_routines(){};  // Empty constructor
    ~calc_routines(){}; // Empty destructor
 
-   void pbc(std::vector<std::vector<double>>&, std::vector<double>&,\
-          const std::array<double, 3>&, const int&);
-
    void initialise_positions(std::vector<std::vector<double>>&,\
-                       const int&, const std::array<double, 3>&, const double&);
+                       const int&, const std::array<double, 3>&,\
+                       const double&, const int&);
 
    void initialise_velocities(std::vector<std::vector<double>>&,\
                         const int&, const std::array<double, 3>&,\
                         const double&, const double&, const int&);
+
+   void pbc(std::vector<std::vector<double>>&, std::vector<double>&,\
+          const std::array<double, 3>&, const int&);
 
    virtual std::vector<std::vector<double>> force_routine(const std::vector<std::vector<double>>&,\
                                        const std::vector<std::vector<double>>&,\
