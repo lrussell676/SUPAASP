@@ -21,10 +21,10 @@ int main(int argc, char* argv[]) {
    // Timescales
    const double dt = 0.0005;           // Timestep size
    const double t = 0.0;               // Initial time
-   const double t_max = 15;            // Maximum time
+   const double t_max = 30;            // Maximum time
    const int t_pw = 100;               // Write to file every t_pw timesteps
    // Simulation Scale and Sizing
-   const int N = 100;                   // Number of atoms
+   const int N = 30;                   // Number of atoms
    const double Lx = 100.0;            // Box length in x
    const double Ly = 100.0;            // Box length in y
    const double Lz = 100.0;            // Box length in z
@@ -80,7 +80,7 @@ int main(int argc, char* argv[]) {
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
    std::cout << "|| --------- Simulation and Particle Initialisation ----------- ||" << std::endl;
    std::cout << "|| ------------------------------------------------------------ ||" << std::endl;
-   CR->initialise_positions(R, N, L, rc2);
+   CR->initialise_positions(R, N, L, rc2, seed);
    CR->initialise_velocities(V, N, L, T, m, seed);
    CR->pbc(R, iR, L, N);
    printf("Periodic Boundary Conditions now applied to all particles.\n");
