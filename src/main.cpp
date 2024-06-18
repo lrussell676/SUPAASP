@@ -22,12 +22,12 @@ int main(int argc, char* argv[]) {
    const double dt = 0.0005;           // Timestep size
    const double t = 0.0;               // Initial time
    const double t_max = 30;            // Maximum time
-   const int t_pw = 100;               // Write to file every t_pw timesteps
+   const int t_pw = 500;               // Write to file every t_pw timesteps
    // Simulation Scale and Sizing
-   const int N = 30;                   // Number of atoms
-   const double Lx = 100.0;            // Box length in x
-   const double Ly = 100.0;            // Box length in y
-   const double Lz = 100.0;            // Box length in z
+   const int N = 150;                  // Number of atoms
+   const double Lx = 200.0;            // Box length in x
+   const double Ly = 200.0;            // Box length in y
+   const double Lz = 200.0;            // Box length in z
    int seed = 242424;                  // Random Seed for Stochastic Forces and RNGs
    
    // Atomic, Thermodynamic, and Molecular Conditions
@@ -53,6 +53,15 @@ int main(int argc, char* argv[]) {
    const std::array<double, 3> L = {Lx, Ly, Lz};
    std::vector<std::vector<double>> R(3, std::vector<double>(N, 0.0));
    std::vector<std::vector<double>> V(3, std::vector<double>(N, 0.0));
+   // Resolve "calc_functions" class
+   calc_routines* CR = NULL;
+   #ifdef KOKKOS_ENABLED
+   Kokkos::initialize(argc,argv);
+   {
+   CR = new calc_routines_kokkos;
+   #else
+   CR = new calc_routines;
+   #endif
    // Check if seed is provided as a command-line argument
    if (argc > 1) {
       seed = std::atoi(argv[1]);
@@ -65,15 +74,6 @@ int main(int argc, char* argv[]) {
    // Append "_RNGseed" and the seed value to file_write_paths
    output_file_path_x += "_RNGseed" + std::to_string(seed);
    output_file_path_v += "_RNGseed" + std::to_string(seed);
-   // Resolve "calc_functions" class
-   calc_routines* CR = NULL;
-   #ifdef KOKKOS_ENABLED
-   Kokkos::initialize(argc,argv);
-   {
-   CR = new calc_routines_kokkos;
-   #else
-   CR = new calc_routines;
-   #endif
 /* ------------------------------------------------------------------------------------------------
    ---- Calling Initialisation Functions ----------------------------------------------------------
    --------------------------------------------------------------------------------------------- */
@@ -108,9 +108,9 @@ int main(int argc, char* argv[]) {
 /* ------------------------------------------------------------------------------------------------
    ---- Total Wall Time ---------------------------------------------------------------------------
    --------------------------------------------------------------------------------------------- */
-   auto end = std::chrono::high_resolution_clock::now();
+   auto end = std::chrono::high_resolution_clock::now(); // End wall time
    std::chrono::duration<double> duration = end - start;
    std::cout << "Total wall time: " << duration.count() << " seconds" << std::endl;
-   
+   // End of Programme
    return 0;
 }
