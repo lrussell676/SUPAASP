@@ -1,0 +1,7 @@
+Timings tested on Laptop. Really just for quick testing purposes and for development reference. Time in seconds, total wall time. 
+
+
+150 Particles, dt 0.0005, t_max 30, t_pw 500, Lxyz 200
+Seed   | Vanilla Time | KK num threads 1 Time | KK num threads 2 Time | KK num threads 4 Time |
+357753 | 168          | 217                   | 165                   | 114                   |
+242424 | 158          | 217                   | 168                   | 118                   |

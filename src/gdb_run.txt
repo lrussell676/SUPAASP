@@ -1,0 +1,8 @@
+# In CLI: xterm -hold -e gdb -x ./gdb_run.txt ./SUPAASP_KOKKOS
+
+tui enable
+set logging enabled on 
+break exit
+catch catch
+catch throw
+run
