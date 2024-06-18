@@ -3,8 +3,6 @@
    --------------------------------------------------------------------------------------------- */
 
 #include "files.h"
-#include <iomanip> // Include the <iomanip> library for std::setw()
-                   // setw() ensures column alignment - looks much tidier.
 
 /* --------------------------------------------------------------------------------------------- */
 void prep_data_files(std::string file_write_path, const int& N, const int& n_timesteps, \
@@ -33,7 +31,6 @@ void write_to_file(std::string file_write_path, std::vector<std::vector<double>>
    if (file_out.fail()) {
       std::cout << "ERROR: Could not open or write to file!\n" << std::endl;
    } else {
-      //file_out << "\nData Points (x \\t \\t y \\t \\t z):\n" <<std::endl;
       int n = data_vec_3D[1].size();
       file_out << "Time: " << t << std::endl;
       file_out << "Iteration Step: " << it << std::endl;
@@ -43,6 +40,5 @@ void write_to_file(std::string file_write_path, std::vector<std::vector<double>>
              "\t" << std::setw(10) << data_vec_3D[2][i] << std::endl;
       }
    file_out.close();
-   //std::cout << "Successful data append to file \"" << file_write_path << "\"!" << std::endl;
    }
 }
