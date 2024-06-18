@@ -52,7 +52,7 @@ void calc_routines::initialise_velocities(std::vector<std::vector<double>>& V, c
   // as predicted via kinetic theory. The velocities are then scaled to the correct temperature.
   std::default_random_engine random_engine(seed);
   for (int n = 0; n < N; n++) {
-    double vnorm2;
+    double vnorm2 = 0.0;
     for (int i = 0; i < 3; i++) {
         V[i][n] = std::uniform_real_distribution<double>(-1.0, 1.0)(random_engine);
         vnorm2 += std::pow(V[i][n], 2);
@@ -142,7 +142,6 @@ void calc_routines::Verlet_Integration(
   const std::array<double, 3>& L, std::vector<double>& iR, const int& seed) 
 {
   double t_i = t;
-  std::vector<double> time;
   std::vector<std::vector<double>> V_i_half(3, std::vector<double>(N, 0.0));
   std::vector<std::vector<double>> temp_force_routine(3, std::vector<double>(N, 0.0));
   std::default_random_engine random_engine(seed);
