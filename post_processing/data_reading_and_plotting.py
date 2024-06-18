@@ -180,7 +180,9 @@ def plot_kinetic_energy(data):
         for i in range(len(time)):
             hold = []
             for k in range(num_particles):
-                kinetic_energy_pre = 0.5 * np.linalg.norm((velocities[i,k,0:3] - velocities[0,k,0:3]))**2
+                kinetic_energy_pre = 0
+                for d in range(3):
+                    kinetic_energy_pre += 0.5 * (velocities[i,k,d])**2
                 hold.append(kinetic_energy_pre)
             kinetic_energy.append(np.sum(hold))
         
@@ -219,3 +221,4 @@ plot_data_2D(pos_data)
 plot_data_3D(pos_data)
 plot_MSD(pos_data)
 plot_kinetic_energy(vel_data)
+#plot_data_2D(vel_data)
