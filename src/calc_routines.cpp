@@ -100,10 +100,10 @@ std::vector<std::vector<double>> calc_routines::force_routine(
   std::vector<double> eta(3, 0.0);
   double r_norm;
 
-  for (int k = 0; k < N; ++k) {
-    for (int j = k; j < N; ++j) {
+  for (int k = 0; k < N; k++) {
+    for (int j = k; j < N; j++) {
       // Minimum Image Convention
-      for (int p = 0; p < 3; ++p) {
+      for (int p = 0; p < 3; p++) {
         r[p] = R[p][k] - R[p][j];
         if (r[p] > 0.5 * L[p]) {
           r[p] -= L[p];
@@ -113,7 +113,7 @@ std::vector<std::vector<double>> calc_routines::force_routine(
         }
       }
       r_norm = std::sqrt(r[0] * r[0] + r[1] * r[1] + r[2] * r[2]);
-      for (int p = 0; p < 3; ++p) {
+      for (int p = 0; p < 3; p++) {
         // Force Calculation : Lennard-Jones Potential
         if ( (r_norm < rc1) && (j != k) ) {
           F_lj[p] = -(r[p] * (4 * energy_scale * ( \

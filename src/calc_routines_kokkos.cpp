@@ -40,9 +40,9 @@ Kokkos::View<double**> calc_routines_kokkos::force_routine(
     double F_lj, F_r;
     Kokkos::View<double[3]> r("r",0.0);
     Kokkos::View<double[3]> eta("eta",0.0);
-    for (int j = k; j < N; ++j) {
+    for (int j = k; j < N; j++) {
       // Minimum Image Convention
-      for (int p = 0; p < 3; ++p) {
+      for (int p = 0; p < 3; p++) {
         r(p) = R(p,k) - R(p,j);
         if (r(p) > 0.5 * L[p]) {
           r(p) -= L[p];
@@ -57,7 +57,7 @@ Kokkos::View<double**> calc_routines_kokkos::force_routine(
       eta(1) = RNG.normal(0.0,1.0);
       eta(2) = RNG.normal(0.0,1.0);
       rand_pool.free_state(RNG);
-      for (int p = 0; p < 3; ++p) {
+      for (int p = 0; p < 3; p++) {
         // Force Calculation : Lennard-Jones Potential
         if ((r_norm < rc1) && (j != k)) {
           F_lj = -(r(p) * (4 * energy_scale * ( \

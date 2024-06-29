@@ -21,13 +21,13 @@ int main(int argc, char* argv[]) {
    // Timescales
    const double dt = 0.0005;           // Timestep size
    const double t = 0.0;               // Initial time
-   const double t_max = 30;            // Maximum time
-   const int t_pw = 500;               // Write to file every t_pw timesteps
+   const double t_max = 100;           // Maximum time
+   const int t_pw = 1000;               // Write to file every t_pw timesteps
    // Simulation Scale and Sizing
-   const int N = 150;                  // Number of atoms
-   const double Lx = 200.0;            // Box length in x
-   const double Ly = 200.0;            // Box length in y
-   const double Lz = 200.0;            // Box length in z
+   const int N = 200;                  // Number of atoms
+   const double Lx = 100.0;            // Box length in x
+   const double Ly = 100.0;            // Box length in y
+   const double Lz = 100.0;            // Box length in z
    int seed = 242424;                  // Random Seed for Stochastic Forces and RNGs
    
    // Atomic, Thermodynamic, and Molecular Conditions
@@ -35,8 +35,8 @@ int main(int argc, char* argv[]) {
    const double gamma = 25;            // Friction coefficient
    const double length_scale = 1.0;    // Length scale for Lennard-Jones potential
    const double energy_scale = 1.0;    // Energy scale for Lennard-Jones potential
-   const double rc1 = 2.5;             // Cutoff distance for Lennard-Jones potential
-   const double rc2 = 2.5;             // Overlap reject thershold for random position generation
+   const double rc1 = 2.5*length_scale;// Cutoff distance for Lennard-Jones potential
+   const double rc2 = 1.1*length_scale;// Overlap reject thershold for random position generation
    const double T = 1.0;               // Temperature
    const double m = 1.0;               // Mass of atoms
    // Paths to write outputted data into
