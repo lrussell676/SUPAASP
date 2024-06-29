@@ -9,20 +9,20 @@ For building the KOKKOS Port, this is done by running 'make' within: ./SUPAASP/s
 More precisely, in my case:
 
 > cd *ARBITRARY-KOKKOS-DOWNLOAD-DIRECTORY*/kokkos-4.3.01/ \
-> mkdir BUILD && mkdir INSTALL \
+> mkdir BUILD && mkdir INSTALL
 >> cmake -B ./BUILD/ -DKokkos_4301=ON -DCMAKE_BUILD_TYPE=Release \
 >> -DCMAKE_CXX_COMPILER=g++ -DCMAKE_INSTALL_PREFIX=./INSTALL/ \
->> -DKokkos_ENABLE_OPENMP=ON -DKokkos_ARCH_ZEN3=ON -S . \
+>> -DKokkos_ENABLE_OPENMP=ON -DKokkos_ARCH_ZEN3=ON -S .
 >> 
 > cmake --build ./BUILD/ \
 > cmake --install ./BUILD/
 
 Then, after the KOKKOS library is installed, it is linked to the project via:
 
-> cd *ARBITRARY-PROJECT-LOCAL-DIRECTORY*/SUPAASP/src/cmake_build \
+> cd *ARBITRARY-PROJECT-LOCAL-DIRECTORY*/SUPAASP/src/cmake_build
 >> cmake -S ./../ -B . \
 >> -DKokkos_ROOT=/media/lewis/PhD/kokkos-4.3.01/INSTALL/lib/cmake/Kokkos \
->> -DCMAKE_CXX_COMPILER=g++ -DCMAKE_BUILD_TYPE=Release \
+>> -DCMAKE_CXX_COMPILER=g++ -DCMAKE_BUILD_TYPE=Release
 >>
 > make
 
